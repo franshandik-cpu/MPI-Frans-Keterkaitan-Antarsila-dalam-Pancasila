@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Interaktif - Keterkaitan Antarsila Pancasila</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Fredoka & Plus Jakarta Sans for playful legible typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Canvas Confetti for Game Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pancasila-red': '#D62828',
+                        'pancasila-gold': '#F7B801',
+                        'pancasila-cream': '#FFFDF7',
+                        'pancasila-dark': '#1D2D44',
+                        'batak-red': '#A11D23',
+                        'bali-yellow': '#F4A261',
+                        'papua-brown': '#A0522D',
+                        'pancasila-green': '#2A9D8F'
+                    },
+                    fontFamily: {
+                        'fredoka': ['Fredoka', 'sans-serif'],
+                        'jakarta': ['Plus Jakarta Sans', 'sans-serif']
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'orbit': 'orbit 12s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-gentle': 'bounceGentle 2s infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        bounceGentle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        },
+                        orbit: {
+                            '0%': { transform: 'rotate(0deg) translateX(120px) rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg) translateX(120px) rotate(-360deg)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Style for Cultural Patterns & Interactive UI -->
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FFFDF7;
+            background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .heading-font {
+            font-family: 'Fredoka', cursive;
+        }
+
+        /* Indonesian Motif Borders */
+        .batik-border-top {
+            background: linear-gradient(90deg, #D62828 0%, #F7B801 25%, #2A9D8F 50%, #F7B801 75%, #D62828 100%);
+            height: 6px;
+        }
+
+        /* Card Hover Effects */
+        .card-interactive {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .card-interactive:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 20px 25px -5px rgba(214, 40, 40, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFFDF7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #F7B801;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D62828;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-yellow-200 selection:text-red-900">
+
+    <!-- BATIK MOTIF HEADER ACCENT -->
+    <div class="batik-border-top"></div>
+
+    <!-- MAIN HEADER & NAVIGATION -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b-2 border-amber-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo & Brand -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-red-600 rounded-2xl flex items-center justify-center shadow-md transform hover:rotate-6 transition-transform">
+                        <i class="fa-solid fa-shield-halved text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="heading-font text-xl sm:text-2xl font-bold text-pancasila-red tracking-wide">PancasilaKita</h1>
+                        <p class="text-xs font-semibold text-amber-700 tracking-wider uppercase">Fase D • Kelas 9 SMP</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Menu -->
+                <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 text-slate-700 hover:bg-amber-100 hover:text-pancasila-red">
+                        <i class="fa-solid fa-house text-amber-500"></i> Home
+                    </button>
+                    <button onclick="switchTab('tujuan')" id="nav-tujuan" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 text-slate-700 hover:bg-amber-100 hover:text-pancasila-red">
+                        <i class="fa-solid fa-bullseye text-red-500"></i> Tujuan
+                    </button>
+                    <button onclick="switchTab('materi')" id="nav-materi" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 text-slate-700 hover:bg-amber-100 hover:text-pancasila-red">
+                        <i class="fa-solid fa-book-open text-emerald-600"></i> Materi
+                    </button>
+                    <button onclick="switchTab('kuis')" id="nav-kuis" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 text-slate-700 hover:bg-amber-100 hover:text-pancasila-red">
+                        <i class="fa-solid fa-circle-question text-purple-600"></i> Kuis
+                    </button>
+                    <button onclick="switchTab('game')" id="nav-game" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 text-slate-700 hover:bg-amber-100 hover:text-pancasila-red">
+                        <i class="fa-solid fa-puzzle-piece text-blue-600"></i> Drag & Drop
+                    </button>
+                    <button onclick="switchTab('tentang')" id="nav-tentang" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 text-slate-700 hover:bg-amber-100 hover:text-pancasila-red">
+                        <i class="fa-solid fa-user-gear text-amber-700"></i> Tentang
+                    </button>
+                </nav>
+
+                <!-- Audio Toggle & Mobile Menu Trigger -->
+                <div class="flex items-center gap-2">
+                    <button id="soundToggle" onclick="toggleAudio()" class="p-3 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-xl transition-all shadow-sm" title="Aktifkan/Matikan Suara">
+                        <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-3 bg-red-50 text-pancasila-red rounded-xl hover:bg-red-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-b-2 border-amber-200 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchTab('home')" class="w-full text-left px-4 py-3 rounded-xl text-base font-bold flex items-center gap-3 text-slate-700 hover:bg-amber-100">
+                <i class="fa-solid fa-house text-amber-500 w-6"></i> Home
+            </button>
+            <button onclick="switchTab('tujuan')" class="w-full text-left px-4 py-3 rounded-xl text-base font-bold flex items-center gap-3 text-slate-700 hover:bg-amber-100">
+                <i class="fa-solid fa-bullseye text-red-500 w-6"></i> Tujuan Pembelajaran
+            </button>
+            <button onclick="switchTab('materi')" class="w-full text-left px-4 py-3 rounded-xl text-base font-bold flex items-center gap-3 text-slate-700 hover:bg-amber-100">
+                <i class="fa-solid fa-book-open text-emerald-600 w-6"></i> Materi Pembelajaran
+            </button>
+            <button onclick="switchTab('kuis')" class="w-full text-left px-4 py-3 rounded-xl text-base font-bold flex items-center gap-3 text-slate-700 hover:bg-amber-100">
+                <i class="fa-solid fa-circle-question text-purple-600 w-6"></i> Kuis Interaktif
+            </button>
+            <button onclick="switchTab('game')" class="w-full text-left px-4 py-3 rounded-xl text-base font-bold flex items-center gap-3 text-slate-700 hover:bg-amber-100">
+                <i class="fa-solid fa-puzzle-piece text-blue-600 w-6"></i> Permainan Drag & Drop
+            </button>
+            <button onclick="switchTab('tentang')" class="w-full text-left px-4 py-3 rounded-xl text-base font-bold flex items-center gap-3 text-slate-700 hover:bg-amber-100">
+                <i class="fa-solid fa-user-gear text-amber-700 w-6"></i> Tentang Pengembang
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- ==================== TABS 1: HOME ==================== -->
+        <section id="tab-home" class="tab-content block space-y-12">
+            
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-red-700 via-red-600 to-amber-500 text-white p-8 sm:p-12 shadow-2xl border-4 border-amber-300">
+                
+                <!-- Background Cultural Pattern Decorative Overlay -->
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                
+                <div class="relative z-10 grid md:grid-cols-12 gap-8 items-center">
+                    <div class="md:col-span-7 space-y-6 text-center md:text-left">
+                        <span class="inline-block px-4 py-1.5 bg-amber-400 text-slate-900 rounded-full font-bold text-xs uppercase tracking-wider shadow-md">
+                            🇮🇩 Pendidikan Pancasila • SMP Kelas IX
+                        </span>
+                        <h1 class="heading-font text-3xl sm:text-5xl font-extrabold leading-tight text-yellow-100">
+                            Keterkaitan Antarsila dalam Pancasila
+                        </h1>
+                        <p class="text-base sm:text-lg text-red-50 leading-relaxed font-medium">
+                            Jelajahi bagaimana kelima sila Pancasila saling terhubung, melengkapi, dan menjadi satu kesatuan utuh yang tak terpisahkan dalam kehidupan berbangsa!
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
+                            <button onclick="switchTab('materi')" class="px-8 py-4 bg-amber-400 hover:bg-amber-300 text-slate-900 rounded-2xl font-bold text-lg shadow-lg hover:shadow-amber-400/50 transform hover:-translate-y-1 transition-all flex items-center gap-3">
+                                <i class="fa-solid fa-play"></i> Mulai Belajar
+                            </button>
+                            <button onclick="switchTab('game')" class="px-8 py-4 bg-white/20 hover:bg-white/30 text-white border-2 border-white/50 rounded-2xl font-bold text-lg backdrop-blur-md hover:shadow-lg transition-all flex items-center gap-3">
+                                <i class="fa-solid fa-gamepad"></i> Main Game
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Orbiting Interactive Illustration -->
+                    <div class="md:col-span-5 flex justify-center relative py-8">
+                        <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+                            
+                            <!-- Central Garuda Emblem Badge -->
+                            <div class="w-28 h-28 sm:w-32 sm:h-32 bg-amber-400 rounded-full flex flex-col items-center justify-center shadow-2xl border-4 border-white animate-float z-10">
+                                <i class="fa-solid fa-shield-halved text-4xl sm:text-5xl text-pancasila-red"></i>
+                                <span class="heading-font font-bold text-xs text-slate-900 mt-1">PANCASILA</span>
+                            </div>
+
+                            <!-- 5 Orbiting Sila Symbols -->
+                            <div class="absolute w-12 h-12 bg-white rounded-full flex items-center justify-center text-amber-500 shadow-md animate-pulse-slow border-2 border-amber-300 -top-2">
+                                <i class="fa-solid fa-star text-2xl" title="Sila 1: Bintang"></i>
+                            </div>
+                            <div class="absolute w-12 h-12 bg-white rounded-full flex items-center justify-center text-amber-600 shadow-md animate-pulse-slow border-2 border-amber-300 top-1/4 -right-2">
+                                <i class="fa-solid fa-link text-2xl" title="Sila 2: Rantai"></i>
+                            </div>
+                            <div class="absolute w-12 h-12 bg-white rounded-full flex items-center justify-center text-emerald-600 shadow-md animate-pulse-slow border-2 border-emerald-300 -bottom-2 right-8">
+                                <i class="fa-solid fa-tree text-2xl" title="Sila 3: Pohon Beringin"></i>
+                            </div>
+                            <div class="absolute w-12 h-12 bg-white rounded-full flex items-center justify-center text-red-600 shadow-md animate-pulse-slow border-2 border-red-300 -bottom-2 left-8">
+                                <i class="fa-solid fa-hippo text-2xl" title="Sila 4: Kepala Banteng"></i>
+                            </div>
+                            <div class="absolute w-12 h-12 bg-white rounded-full flex items-center justify-center text-yellow-600 shadow-md animate-pulse-slow border-2 border-yellow-300 top-1/4 -left-2">
+                                <i class="fa-solid fa-wheat-awn text-2xl" title="Sila 5: Padi & Kapas"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nusantara Cultural Greeting Cards -->
+            <div class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <h2 class="heading-font text-2xl sm:text-3xl font-bold text-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-heart text-pancasila-red"></i> Kenapa Pancasila Itu Utuh?
+                    </h2>
+                    <span class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-lg">Bhinneka Tunggal Ika</span>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    
+                    <!-- Batak Culture Accent Card -->
+                    <div class="card-interactive bg-white p-6 rounded-3xl border-2 border-red-200 shadow-sm relative overflow-hidden">
+                        <div class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center text-batak-red mb-4 text-2xl font-bold">
+                            <i class="fa-solid fa-diagram-project"></i>
+                        </div>
+                        <div class="inline-block px-3 py-1 bg-red-50 text-red-700 text-xs font-bold rounded-full mb-2">Motif Batak • Kesatuan</div>
+                        <h3 class="heading-font text-xl font-bold text-slate-800 mb-2">Sistem Hierarkis Piramidal</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Sila pertama melandasi sila kedua, ketiga, keempat, dan kelima. Setiap sila menjiwai dan dijiwai oleh sila-sila lainnya.
+                        </p>
+                    </div>
+
+                    <!-- Bali Culture Accent Card -->
+                    <div class="card-interactive bg-white p-6 rounded-3xl border-2 border-amber-200 shadow-sm relative overflow-hidden">
+                        <div class="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 mb-4 text-2xl font-bold">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
+                        <div class="inline-block px-3 py-1 bg-amber-50 text-amber-700 text-xs font-bold rounded-full mb-2">Motif Bali • Harmoni</div>
+                        <h3 class="heading-font text-xl font-bold text-slate-800 mb-2">Saling Mengisi & Saling Mengunci</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Tidak ada satu pun sila dalam Pancasila yang dapat berdiri sendiri secara terpisah tanpa melibatkan nilai sila lainnya.
+                        </p>
+                    </div>
+
+                    <!-- Papua Culture Accent Card -->
+                    <div class="card-interactive bg-white p-6 rounded-3xl border-2 border-emerald-200 shadow-sm relative overflow-hidden">
+                        <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 mb-4 text-2xl font-bold">
+                            <i class="fa-solid fa-people-roof"></i>
+                        </div>
+                        <div class="inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full mb-2">Motif Papua • Gotong Royong</div>
+                        <h3 class="heading-font text-xl font-bold text-slate-800 mb-2">Pedoman Keseharian Siswa</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Menerapkan Pancasila dalam tindakan nyata sehari-hari di sekolah, rumah, dan masyarakat secara konsisten.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Quick Start Feature Cards -->
+            <div class="bg-gradient-to-r from-amber-500 to-red-600 rounded-3xl p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+                <div class="space-y-2 text-center md:text-left">
+                    <h3 class="heading-font text-2xl font-bold text-yellow-100">Siap Menguji Pemahamanmu?</h3>
+                    <p class="text-red-100 text-sm">Coba ikuti Kuis Interaktif dan Permainan Drag & Drop untuk menguji ingatanmu!</p>
+                </div>
+                <div class="flex gap-4">
+                    <button onclick="switchTab('kuis')" class="px-6 py-3 bg-white text-pancasila-red font-bold rounded-xl shadow-md hover:bg-yellow-100 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square"></i> Coba Kuis
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==================== TABS 2: TUJUAN PEMBELAJARAN ==================== -->
+        <section id="tab-tujuan" class="tab-content hidden space-y-8">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <span class="px-4 py-1.5 bg-red-100 text-pancasila-red rounded-full font-bold text-xs uppercase tracking-wider">
+                    Capaian Pembelajaran (CP) - Fase D
+                </span>
+                <h2 class="heading-font text-3xl sm:text-4xl font-bold text-slate-900">
+                    Tujuan & Indikator Pembelajaran
+                </h2>
+                <p class="text-slate-600 text-base">
+                    Berikut adalah target kompetensi yang akan kamu capai setelah mempelajari materi keterkaitan antarsila Pancasila ini.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                
+                <!-- Target Learning List Card -->
+                <div class="bg-white p-8 rounded-3xl border-2 border-amber-200 shadow-md space-y-6">
+                    <div class="flex items-center gap-4 pb-4 border-b border-amber-100">
+                        <div class="w-14 h-14 bg-amber-400 rounded-2xl flex items-center justify-center text-white text-2xl shadow-sm">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <div>
+                            <h3 class="heading-font text-xl font-bold text-slate-800">Tujuan Pembelajaran</h3>
+                            <p class="text-xs text-amber-700 font-semibold">Kelas IX SMP / Fase D</p>
+                        </div>
+                    </div>
+
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4 p-4 bg-amber-50/60 rounded-2xl border border-amber-200">
+                            <div class="w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center font-bold shrink-0 mt-0.5">1</div>
+                            <p class="text-slate-700 text-sm font-medium leading-relaxed">
+                                Peserta didik mampu <strong class="text-emerald-700">menganalisis keterkaitan</strong> antara sila-sila dalam Pancasila sebagai satu kesatuan yang utuh dan bulat.
+                            </p>
+                        </li>
+
+                        <li class="flex items-start gap-4 p-4 bg-amber-50/60 rounded-2xl border border-amber-200">
+                            <div class="w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center font-bold shrink-0 mt-0.5">2</div>
+                            <p class="text-slate-700 text-sm font-medium leading-relaxed">
+                                Peserta didik dapat <strong class="text-emerald-700">mengidentifikasi contoh perilaku</strong> sehari-hari yang mencerminkan hubungan saling menjiwai antarsila.
+                            </p>
+                        </li>
+
+                        <li class="flex items-start gap-4 p-4 bg-amber-50/60 rounded-2xl border border-amber-200">
+                            <div class="w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center font-bold shrink-0 mt-0.5">3</div>
+                            <p class="text-slate-700 text-sm font-medium leading-relaxed">
+                                Peserta didik dapat <strong class="text-emerald-700">mengembangkan pemahaman</strong> pentingnya menjaga keutuhan nilai Pancasila dalam keberagaman Indonesia.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Mascot & Character Guidance Card -->
+                <div class="bg-gradient-to-br from-amber-100 via-red-50 to-orange-100 p-8 rounded-3xl border-2 border-red-200 shadow-md space-y-6">
+                    <div class="flex items-center gap-4 pb-4 border-b border-red-200">
+                        <div class="w-14 h-14 bg-pancasila-red rounded-2xl flex items-center justify-center text-white text-2xl shadow-sm">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="heading-font text-xl font-bold text-slate-800">Profil Pelajar Pancasila</h3>
+                            <p class="text-xs text-red-700 font-semibold">Karakter Yang Dikembangkan</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-amber-200 text-center space-y-2">
+                            <i class="fa-solid fa-hands-praying text-amber-500 text-3xl"></i>
+                            <h4 class="font-bold text-slate-800 text-sm">Beriman & Bertakwa</h4>
+                            <p class="text-xs text-slate-500">Meyakini nilai Ketuhanan</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-amber-200 text-center space-y-2">
+                            <i class="fa-solid fa-earth-asia text-blue-500 text-3xl"></i>
+                            <h4 class="font-bold text-slate-800 text-sm">Berkebinekaan Global</h4>
+                            <p class="text-xs text-slate-500">Menghargai budaya nusantara</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-amber-200 text-center space-y-2">
+                            <i class="fa-solid fa-people-hold text-emerald-500 text-3xl"></i>
+                            <h4 class="font-bold text-slate-800 text-sm">Gotong Royong</h4>
+                            <p class="text-xs text-slate-500">Bekerja sama demi kebaikan</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-amber-200 text-center space-y-2">
+                            <i class="fa-solid fa-brain text-purple-500 text-3xl"></i>
+                            <h4 class="font-bold text-slate-800 text-sm">Bernalar Kritis</h4>
+                            <p class="text-xs text-slate-500">Menganalisis sebab-akibat</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white/80 rounded-2xl border border-red-300 text-xs text-slate-700 flex items-center gap-3">
+                        <i class="fa-solid fa-lightbulb text-amber-500 text-2xl shrink-0"></i>
+                        <span><strong>Petunjuk:</strong> Pelajari setiap bagian materi interaktif lalu uji kemampuanmu pada menu Kuis & Game!</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ==================== TABS 3: MATERI INTERAKTIF ==================== -->
+        <section id="tab-materi" class="tab-content hidden space-y-10">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <span class="px-4 py-1.5 bg-emerald-100 text-emerald-800 rounded-full font-bold text-xs uppercase tracking-wider">
+                    Eksplorasi Interaktif
+                </span>
+                <h2 class="heading-font text-3xl sm:text-4xl font-bold text-slate-900">
+                    Konsep Keterkaitan Antarsila
+                </h2>
+                <p class="text-slate-600 text-base">
+                    Klik pada setiap sila untuk mempelajari bagaimana sila tersebut terhubung dengan sila-sila lainnya!
+                </p>
+            </div>
+
+            <!-- Interactive Sila Selector Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
+                <button onclick="showSilaDetail(1)" id="sila-btn-1" class="sila-tab-btn bg-white border-2 border-amber-300 hover:border-amber-500 p-4 rounded-2xl shadow-sm flex flex-col items-center gap-2 transition-all active-sila shadow-amber-200">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <span class="font-bold text-xs sm:text-sm text-slate-800 text-center">Sila 1</span>
+                    <span class="text-[10px] text-slate-500 text-center hidden sm:block">Ketuhanan</span>
+                </button>
+
+                <button onclick="showSilaDetail(2)" id="sila-btn-2" class="sila-tab-btn bg-white border-2 border-amber-200 hover:border-amber-500 p-4 rounded-2xl shadow-sm flex flex-col items-center gap-2 transition-all">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <span class="font-bold text-xs sm:text-sm text-slate-800 text-center">Sila 2</span>
+                    <span class="text-[10px] text-slate-500 text-center hidden sm:block">Kemanusiaan</span>
+                </button>
+
+                <button onclick="showSilaDetail(3)" id="sila-btn-3" class="sila-tab-btn bg-white border-2 border-emerald-200 hover:border-emerald-500 p-4 rounded-2xl shadow-sm flex flex-col items-center gap-2 transition-all">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-tree"></i>
+                    </div>
+                    <span class="font-bold text-xs sm:text-sm text-slate-800 text-center">Sila 3</span>
+                    <span class="text-[10px] text-slate-500 text-center hidden sm:block">Persatuan</span>
+                </button>
+
+                <button onclick="showSilaDetail(4)" id="sila-btn-4" class="sila-tab-btn bg-white border-2 border-red-200 hover:border-red-500 p-4 rounded-2xl shadow-sm flex flex-col items-center gap-2 transition-all">
+                    <div class="w-12 h-12 bg-red-100 text-red-700 rounded-xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-hippo"></i>
+                    </div>
+                    <span class="font-bold text-xs sm:text-sm text-slate-800 text-center">Sila 4</span>
+                    <span class="text-[10px] text-slate-500 text-center hidden sm:block">Kerakyatan</span>
+                </button>
+
+                <button onclick="showSilaDetail(5)" id="sila-btn-5" class="sila-tab-btn bg-white border-2 border-yellow-200 hover:border-yellow-500 p-4 rounded-2xl shadow-sm flex flex-col items-center gap-2 transition-all col-span-2 sm:col-span-1">
+                    <div class="w-12 h-12 bg-yellow-100 text-yellow-700 rounded-xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-wheat-awn"></i>
+                    </div>
+                    <span class="font-bold text-xs sm:text-sm text-slate-800 text-center">Sila 5</span>
+                    <span class="text-[10px] text-slate-500 text-center hidden sm:block">Keadilan</span>
+                </button>
+            </div>
+
+            <!-- Dynamic Detail Content Area -->
+            <div id="materi-detail-box" class="bg-white rounded-3xl border-2 border-amber-300 p-6 sm:p-10 shadow-xl transition-all">
+                <!-- Content will be injected by JavaScript -->
+            </div>
+
+            <!-- Core Concept Overview Card -->
+            <div class="bg-gradient-to-r from-red-50 via-amber-50 to-emerald-50 rounded-3xl p-8 border-2 border-amber-200 space-y-4">
+                <h3 class="heading-font text-2xl font-bold text-slate-800 flex items-center gap-3">
+                    <i class="fa-solid fa-cube text-pancasila-red"></i> Prinsip Kesatuan Hierarkis Piramidal
+                </h3>
+                <p class="text-slate-700 text-sm leading-relaxed">
+                    Pancasila tidak disusun secara acak. Urutan sila dari 1 sampai 5 memiliki makna hierarkis:
+                </p>
+                <div class="grid sm:grid-cols-2 gap-4 pt-2">
+                    <div class="bg-white p-4 rounded-2xl border border-amber-200 text-xs space-y-1">
+                        <span class="font-bold text-pancasila-red">1. Meliputi dan Menjiwai</span>
+                        <p class="text-slate-600">Sila yang berada di awal meliputi, mendasari, dan menjiwai sila-sila yang berada setelahnya.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-amber-200 text-xs space-y-1">
+                        <span class="font-bold text-emerald-700">2. Diliputi dan Dijiwai</span>
+                        <p class="text-slate-600">Sila yang berada di belakang diliputi dan dijiwai oleh sila-sila yang berada sebelumnya.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==================== TABS 4: KUIS INTERAKTIF ==================== -->
+        <section id="tab-kuis" class="tab-content hidden space-y-8">
+            
+            <!-- Quiz Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <span class="px-4 py-1.5 bg-purple-100 text-purple-800 rounded-full font-bold text-xs uppercase tracking-wider">
+                    Uji Kemampuan
+                </span>
+                <h2 class="heading-font text-3xl sm:text-4xl font-bold text-slate-900">
+                    Kuis Interaktif Pancasila
+                </h2>
+                <p class="text-slate-600 text-base">
+                    Jawablah 5 pertanyaan berikut untuk menguji pemahamanmu mengenai keterkaitan antarsila!
+                </p>
+            </div>
+
+            <!-- Quiz Card Container -->
+            <div class="max-w-3xl mx-auto bg-white rounded-3xl border-2 border-purple-200 p-6 sm:p-10 shadow-xl space-y-8 relative overflow-hidden">
+                
+                <!-- Progress Bar & Counter -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-sm font-bold text-slate-600">
+                        <span id="quiz-progress-text">Soal 1 dari 5</span>
+                        <span id="quiz-score-badge" class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs">Skor: 0</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                        <div id="quiz-progress-bar" class="bg-gradient-to-r from-purple-500 to-pancasila-red h-full w-1/5 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <!-- Question Text -->
+                <div id="quiz-question-box" class="space-y-4">
+                    <h3 id="quiz-question" class="heading-font text-xl sm:text-2xl font-bold text-slate-800 leading-snug">
+                        <!-- Question text inserted by JS -->
+                    </h3>
+                </div>
+
+                <!-- Answer Options -->
+                <div id="quiz-options" class="grid gap-4">
+                    <!-- Option buttons inserted by JS -->
+                </div>
+
+                <!-- Explanation Feedback Box -->
+                <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-sm leading-relaxed space-y-2">
+                    <!-- Feedback injected by JS -->
+                </div>
+
+                <!-- Action Button -->
+                <div class="flex justify-end pt-4">
+                    <button id="quiz-next-btn" onclick="nextQuestion()" class="hidden px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl shadow-md transition-all flex items-center gap-2">
+                        Lanjut Soal <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Final Score Screen Overlay (Hidden by Default) -->
+                <div id="quiz-result-screen" class="hidden text-center space-y-6 py-8">
+                    <div class="w-24 h-24 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-5xl mx-auto shadow-inner animate-bounce-gentle">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="heading-font text-3xl font-bold text-slate-800">Selamat! Kuis Selesai</h3>
+                        <p class="text-slate-600 text-sm">Kamu telah menyelesaikan seluruh pertanyaan kuis.</p>
+                    </div>
+                    
+                    <div class="p-6 bg-purple-50 rounded-2xl border border-purple-200 inline-block min-w-[240px]">
+                        <span class="text-xs font-bold text-purple-700 uppercase">Skor Akhir Kamu</span>
+                        <div id="quiz-final-score" class="heading-font text-5xl font-extrabold text-purple-900 my-2">100</div>
+                        <p id="quiz-score-message" class="text-xs text-purple-700 font-semibold">Luar biasa! Pemahamanmu sangat matang!</p>
+                    </div>
+
+                    <div>
+                        <button onclick="restartQuiz()" class="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl shadow-lg transition-all flex items-center gap-2 mx-auto">
+                            <i class="fa-solid fa-rotate-right"></i> Ulangi Kuis
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ==================== TABS 5: DRAG AND DROP GAME ==================== -->
+        <section id="tab-game" class="tab-content hidden space-y-8">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <span class="px-4 py-1.5 bg-blue-100 text-blue-800 rounded-full font-bold text-xs uppercase tracking-wider">
+                    Permainan Interaktif
+                </span>
+                <h2 class="heading-font text-3xl sm:text-4xl font-bold text-slate-900">
+                    Jodohkan Keterkaitan Sila
+                </h2>
+                <p class="text-slate-600 text-base">
+                    Pilih/Seret kartu situasi di sebelah kiri ke wadah Sila Utama yang tepat di sebelah kanan!
+                </p>
+            </div>
+
+            <!-- Game Board Grid -->
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Draggable / Selectable Cards Container -->
+                <div class="lg:col-span-5 space-y-4 bg-white p-6 rounded-3xl border-2 border-blue-200 shadow-md">
+                    <h3 class="heading-font text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-hand text-blue-500"></i> Kartu Perilaku / Kasus
+                    </h3>
+                    <p class="text-xs text-slate-500">Klik kartu lalu klik wadah tujuan, atau seret langsung!</p>
+
+                    <div id="drag-source-container" class="space-y-3 min-h-[300px]">
+                        <!-- Game cards rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Drop Targets Container -->
+                <div class="lg:col-span-7 space-y-4 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-3xl border-2 border-blue-200 shadow-md">
+                    <h3 class="heading-font text-xl font-bold text-slate-800 flex items-center justify-between">
+                        <span><i class="fa-solid fa-box-archive text-indigo-600"></i> Wadah Sila Utama</span>
+                        <span id="game-score-badge" class="text-xs bg-blue-600 text-white px-3 py-1 rounded-full font-bold">Terjawab: 0/4</span>
+                    </h3>
+
+                    <div id="drop-targets-container" class="grid sm:grid-cols-2 gap-4">
+                        <!-- Drop targets rendered by JS -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Game Reset & Celebration Button -->
+            <div class="text-center pt-4">
+                <button onclick="resetGame()" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-md transition-all inline-flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Permainan
+                </button>
+            </div>
+
+        </section>
+
+        <!-- ==================== TABS 6: TENTANG PENGEMBANG ==================== -->
+        <section id="tab-tentang" class="tab-content hidden space-y-10">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <span class="px-4 py-1.5 bg-amber-100 text-amber-800 rounded-full font-bold text-xs uppercase tracking-wider">
+                    Informasi Pengembang
+                </span>
+                <h2 class="heading-font text-3xl sm:text-4xl font-bold text-slate-900">
+                    Tentang Media Pembelajaran
+                </h2>
+            </div>
+
+            <div class="max-w-4xl mx-auto grid md:grid-cols-12 gap-8 items-stretch">
+                
+                <!-- Developer Card -->
+                <div class="md:col-span-5 bg-gradient-to-b from-red-600 to-amber-600 text-white p-8 rounded-3xl shadow-xl flex flex-col justify-between text-center relative overflow-hidden border-4 border-amber-300">
+                    
+                    <div class="space-y-4 z-10 relative">
+                        <div class="w-28 h-28 bg-white text-pancasila-red rounded-full flex items-center justify-center text-5xl mx-auto shadow-2xl border-4 border-amber-300">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="heading-font text-2xl font-bold text-yellow-100">Fransiskus Handika</h3>
+                            <p class="text-xs font-semibold text-red-100 uppercase tracking-widest mt-1">Guru SMP / Pendidik PPKn</p>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/20 text-xs text-red-100 space-y-2">
+                            <p><i class="fa-solid fa-school text-amber-300 mr-2"></i> Pengembang Media Pembelajaran Interaktif</p>
+                            <p><i class="fa-solid fa-book-bookmark text-amber-300 mr-2"></i> Materi: PPKn / Pendidikan Pancasila</p>
+                            <p><i class="fa-solid fa-layer-group text-amber-300 mr-2"></i> Sasaran: SMP Kelas IX (Fase D)</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-white/20 z-10">
+                        <span class="text-[11px] bg-white/20 px-3 py-1 rounded-full font-mono">Versi Aplikasi 2.0 • 2026</span>
+                    </div>
+                </div>
+
+                <!-- Technical & Educational Spec Card -->
+                <div class="md:col-span-7 bg-white p-8 rounded-3xl border-2 border-amber-200 shadow-md space-y-6 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <h3 class="heading-font text-xl font-bold text-slate-800 border-b border-amber-100 pb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-laptop-code text-pancasila-red"></i> Spesifikasi Media Pembelajaran
+                        </h3>
+
+                        <div class="space-y-3 text-sm text-slate-600">
+                            <div class="flex items-start gap-3">
+                                <i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">Teknologi Single-File Web SPA:</strong>
+                                    <p class="text-xs text-slate-500">Dibangun menggunakan HTML5, Tailwind CSS, JavaScript ES6, dan Web Audio API tanpa perlu memuat ulang halaman.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">Pendekatan Kurikulum Merdeka:</strong>
+                                    <p class="text-xs text-slate-500">Dirancang sesuai Capaian Pembelajaran (CP) Pendidikan Pancasila Fase D untuk memperkuat profil Pelajar Pancasila.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">Nuansa Budaya Nusantara:</strong>
+                                    <p class="text-xs text-slate-500">Menggabungkan ragam elemen visual khas Indonesia seperti ornamen Batak, Bali, dan Papua sebagai simbol keutuhan bangsa.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-amber-50 rounded-2xl border border-amber-200 text-xs text-amber-900">
+                        <p class="font-bold mb-1"><i class="fa-solid fa-heart text-red-500"></i> Catatan Pengguna:</p>
+                        <p>Media ini bebas digunakan untuk kegiatan pembelajaran pembelajaran di kelas maupun belajar mandiri oleh siswa.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-white mt-16 border-t-4 border-amber-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+                <div>
+                    <h4 class="heading-font text-lg font-bold text-amber-400">PancasilaKita • Media Pembelajaran Interaktif</h4>
+                    <p class="text-xs text-slate-400">Keterkaitan Antarsila dalam Pancasila - SMP Kelas 9 (Fase D)</p>
+                </div>
+                <div class="text-xs text-slate-400">
+                    <span>Dikembangkan oleh <strong class="text-amber-300">Fransiskus Handika</strong></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ==========================================================================
+           1. AUDIO SYNTHESIZER (WEB AUDIO API)
+           ========================================================================== */
+        let audioEnabled = true;
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioCtx();
+            }
+        }
+
+        function playSound(type) {
+            if (!audioEnabled) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'correct') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(250, now);
+                    osc.frequency.setValueAtTime(180, now + 0.15);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                }
+            } catch (e) {
+                console.log('Audio error:', e);
+            }
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const icon = document.getElementById('soundIcon');
+            const btn = document.getElementById('soundToggle');
+            if (audioEnabled) {
+                icon.className = 'fa-solid fa-volume-high';
+                btn.className = 'p-3 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-xl transition-all shadow-sm';
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark';
+                btn.className = 'p-3 bg-slate-200 text-slate-500 rounded-xl transition-all shadow-sm';
+            }
+        }
+
+        /* ==========================================================================
+           2. SPA NAVIGATION TAB SWITCHING
+           ========================================================================== */
+        function switchTab(tabId) {
+            playSound('click');
+            
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(el => el.classList.add('hidden'));
+
+            // Show selected tab content
+            const activeContent = document.getElementById(`tab-${tabId}`);
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+            }
+
+            // Update Navigation Button Active Styles
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('bg-pancasila-red', 'text-white', 'shadow-md');
+                btn.classList.add('text-slate-700');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-pancasila-red', 'text-white', 'shadow-md');
+                activeBtn.classList.remove('text-slate-700');
+            }
+
+            // Close mobile menu if open
+            document.getElementById('mobileMenu').classList.add('hidden');
+
+            // Scroll top smooth
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            playSound('click');
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        /* ==========================================================================
+           3. MATERI INTERAKTIF DATA & LOGIC
+           ========================================================================== */
+        const materiData = {
+            1: {
+                title: "Sila Pertama: Ketuhanan Yang Maha Esa",
+                icon: "fa-star",
+                color: "amber",
+                quote: "Meyakini Tuhan Yang Maha Esa dan menghormati kebebasan beragama.",
+                relations: [
+                    { sila: "Menjiwai Sila 2", text: "Menghormati hak asasi manusia sebagai ciptaan Tuhan Yang Maha Esa." },
+                    { sila: "Menjiwai Sila 3", text: "Menjaga persatuan bangsa atas dasar toleransi antarumat beragama." },
+                    { sila: "Menjiwai Sila 4", text: "Mengutamakan musyawarah yang jujur dan bertanggung jawab kepada Tuhan." },
+                    { sila: "Menjiwai Sila 5", text: "Mewujudkan keadilan sosial sebagai wujud amanat ketuhanan." }
+                ],
+                example: "Siswa yang taat beragama (Sila 1) tidak akan membeda-bedakan teman yang berbeda keyakinan saat belajar kelompok (Sila 2 & 3)."
+            },
+            2: {
+                title: "Sila Kedua: Kemanusiaan Yang Adil dan Beradab",
+                icon: "fa-link",
+                color: "amber",
+                quote: "Menjunjung tinggi harkat, martabat, serta kesetaraan hak manusia.",
+                relations: [
+                    { sila: "Dijiwai Sila 1", text: "Nilai kemanusiaan bersumber dari ajaran moral keagamaan." },
+                    { sila: "Menjiwai Sila 3", text: "Kemanusiaan yang adil menjadi syarat lahirnya persatuan yang kokoh." },
+                    { sila: "Menjiwai Sila 4", text: "Menghargai pendapat orang lain saat bermusyawarah tanpa merendahkan." },
+                    { sila: "Menjiwai Sila 5", text: "Perlakuan adil kepada sesama manusia menjadi dasar keadilan sosial." }
+                ],
+                example: "Membantu teman yang tertimpa musibah tanpa memandang suku atau agamanya."
+            },
+            3: {
+                title: "Sila Ketiga: Persatuan Indonesia",
+                icon: "fa-tree",
+                color: "emerald",
+                quote: "Mengutamakan kepentingan bangsa di atas kepentingan pribadi/golongan.",
+                relations: [
+                    { sila: "Dijiwai Sila 1 & 2", text: "Persatuan dibentuk atas dasar nilai ketuhanan dan penghargaan kemanusiaan." },
+                    { sila: "Menjiwai Sila 4", text: "Persatuan nasional dijaga melalui musyawarah untuk mufakat." },
+                    { sila: "Menjiwai Sila 5", text: "Persatuan menjadi modal utama mewujudkan keadilan sosial bagi seluruh rakyat." }
+                ],
+                example: "Gotong royong membersihkan lingkungan sekolah bersama teman dari berbagai daerah."
+            },
+            4: {
+                title: "Sila Keempat: Kerakyatan Yang Dipimpin oleh Hikmat Kebijaksanaan dalam Permusyawaratan/Perwakilan",
+                icon: "fa-hippo",
+                color: "red",
+                quote: "Demokrasi Pancasila yang mengutamakan musyawarah mufakat.",
+                relations: [
+                    { sila: "Dijiwai Sila 1, 2, 3", text: "Musyawarah dilakukan secara jujur, santun, dan dalam kerangka persatuan." },
+                    { sila: "Menjiwai Sila 5", text: "Keputusan musyawarah bertujuan mencapai keadilan sosial bagi masyarakat." }
+                ],
+                example: "Pemilihan ketua OSIS secara demokratis dan menerima hasil keputusan bersama secara lapang dada."
+            },
+            5: {
+                title: "Sila Kelima: Keadilan Sosial Bagi Seluruh Rakyat Indonesia",
+                icon: "fa-wheat-awn",
+                color: "yellow",
+                quote: "Tujuan akhir dari pelaksanaan seluruh sila-sila Pancasila.",
+                relations: [
+                    { sila: "Dijiwai Sila 1, 2, 3, 4", text: "Keadilan sosial merupakan muara dari nilai keagamaan, kemanusiaan, persatuan, dan demokrasi." }
+                ],
+                example: "Membagi tugas kelompok secara adil sesuai kemampuan masing-masing anggota."
+            }
+        };
+
+        function showSilaDetail(silaNum) {
+            playSound('click');
+            const data = materiData[silaNum];
+
+            // Update Tab Highlight
+            document.querySelectorAll('.sila-tab-btn').forEach(btn => {
+                btn.classList.remove('border-amber-500', 'bg-amber-50', 'shadow-md');
+            });
+            document.getElementById(`sila-btn-${silaNum}`).classList.add('border-amber-500', 'bg-amber-50', 'shadow-md');
+
+            // Render Content Box
+            const box = document.getElementById('materi-detail-box');
+            box.innerHTML = `
+                <div class="space-y-6 animate-fadeIn">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b pb-4 border-slate-100">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 bg-${data.color}-100 text-${data.color}-600 rounded-2xl flex items-center justify-center text-3xl shadow-sm">
+                                <i class="fa-solid ${data.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="heading-font text-2xl font-bold text-slate-800">${data.title}</h3>
+                                <p class="text-xs text-slate-500 font-medium">${data.quote}</p>
+                            </div>
+                        </div>
+                        <span class="px-4 py-1.5 bg-${data.color}-100 text-${data.color}-800 rounded-full font-bold text-xs">
+                            Sila ${silaNum}
+                        </span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-arrows-split-up-and-left text-pancasila-red"></i> Keterkaitan Dengan Sila Lain:
+                        </h4>
+                        <div class="grid sm:grid-cols-2 gap-3">
+                            ${data.relations.map(rel => `
+                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+                                    <span class="font-bold text-xs text-pancasila-red block">${rel.sila}</span>
+                                    <p class="text-xs text-slate-600 leading-relaxed">${rel.text}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-amber-50 rounded-2xl border border-amber-200 text-xs text-amber-900 flex items-start gap-3">
+                        <i class="fa-solid fa-circle-info text-amber-600 text-lg shrink-0 mt-0.5"></i>
+                        <div>
+                            <strong class="block mb-0.5">Contoh Nyata Kehidupan Siswa SMP:</strong>
+                            <p>${data.example}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* ==========================================================================
+           4. KUIS INTERAKTIF LOGIC
+           ========================================================================== */
+        const quizQuestions = [
+            {
+                q: "Bagaimanakah hubungan antara Sila Pertama (Ketuhanan) dengan Sila Kedua (Kemanusiaan) dalam Pancasila?",
+                options: [
+                    "Sila Pertama berdiri sendiri tanpa hubungan dengan Sila Kedua",
+                    "Sila Pertama menjiwai Sila Kedua, sehingga nilai kemanusiaan didasari atas keimanan kepada Tuhan",
+                    "Sila Kedua lebih penting daripada Sila Pertama dalam masyarakat",
+                    "Sila Pertama hanya berlaku di tempat ibadah saja"
+                ],
+                correct: 1,
+                explanation: "Sila Pertama menjiwai Sila Kedua. Penghargaan terhadap martabat manusia (Sila 2) merupakan wujud perintah ajaran agama dan ketuhanan (Sila 1)."
+            },
+            {
+                q: "Mengapa Pancasila disebut sebagai satu kesatuan yang organis, hierarkis, dan piramidal?",
+                options: [
+                    "Karena setiap sila memiliki arti yang berlawanan satu sama lain",
+                    "Karena urutan sila dapat diubah-ubah sesuai keinginan",
+                    "Karena sila pertama melandasi sila-sila berikutnya, dan kelima sila saling menjiwai secara terpadu",
+                    "Karena Pancasila hanya berlaku untuk golongan tertentu"
+                ],
+                correct: 2,
+                explanation: "Hierarkis piramidal berarti sila pertama menjadi basis terluas yang menjiwai sila 2, 3, 4, dan 5 secara berturut-turut."
+            },
+            {
+                q: "Seorang siswa bermusyawarah menentukan ketua kelas (Sila 4) dengan tetap saling menghormati pendapat (Sila 2) demi menjaga kekompakan kelas (Sila 3). Hal ini membuktikan bahwa...",
+                options: [
+                    "Sila-sila dalam Pancasila saling berkaitan erat dalam satu tindakan nyata",
+                    "Sila ke-4 dapat dilaksanakan tanpa memerlukan Sila ke-3",
+                    "Siswa tersebut melanggar aturan sekolah",
+                    "Hanya Sila ke-4 yang bekerja pada peristiwa tersebut"
+                ],
+                correct: 0,
+                explanation: "Tindakan musyawarah yang santun dan menjaga persatuan merupakan contoh nyata keterkaitan Sila 4, Sila 2, dan Sila 3 sekaligus."
+            },
+            {
+                q: "Muara atau tujuan akhir dari pelaksanaan Sila 1, 2, 3, dan 4 adalah untuk mewujudkan...",
+                options: [
+                    "Persatuan khusus kelompok tertentu",
+                    "Keadilan Sosial Bagi Seluruh Rakyat Indonesia (Sila 5)",
+                    "Keuntungan pribadi para pemimpin",
+                    "Kebebasan tanpa batas"
+                ],
+                correct: 1,
+                explanation: "Sila ke-5 (Keadilan Sosial) adalah tujuan akhir yang dijiwai oleh keluhuran Sila 1, 2, 3, dan 4."
+            },
+            {
+                q: "Sikap toleransi antarumat beragama di sekolah (Sila 1) dapat memperkokoh persatuan bangsa (Sila 3). Hal ini menunjukkan contoh hubungan...",
+                options: [
+                    "Saling bertentangan",
+                    "Saling menjiwai dan mendukung antar-sila",
+                    "Tidak ada hubungannya sama sekali",
+                    "Hanya kebetulan belaka"
+                ],
+                correct: 1,
+                explanation: "Toleransi beragama yang menciptakan kedamaian dan persatuan adalah bukti langsung Sila 1 menjiwai Sila 3."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        function loadQuestion() {
+            answered = false;
+            const qData = quizQuestions[currentQuizIndex];
+
+            // Progress Update
+            document.getElementById('quiz-progress-text').innerText = `Soal ${currentQuizIndex + 1} dari ${quizQuestions.length}`;
+            document.getElementById('quiz-progress-bar').style.width = `${((currentQuizIndex + 1) / quizQuestions.length) * 100}%`;
+            document.getElementById('quiz-score-badge').innerText = `Skor: ${score}`;
+
+            // Question Text
+            document.getElementById('quiz-question').innerText = qData.q;
+
+            // Feedback & Next Reset
+            const feedbackBox = document.getElementById('quiz-feedback');
+            feedbackBox.className = "hidden p-4 rounded-2xl text-sm leading-relaxed space-y-2";
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            // Options Render
+            const optionsBox = document.getElementById('quiz-options');
+            optionsBox.innerHTML = '';
+
+            qData.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border-2 border-slate-200 hover:border-purple-400 hover:bg-purple-50/50 font-medium text-slate-700 text-sm transition-all flex items-start gap-3 shadow-sm";
+                btn.onclick = () => selectQuizOption(idx);
+                btn.innerHTML = `
+                    <span class="w-7 h-7 bg-purple-100 text-purple-700 font-bold rounded-lg flex items-center justify-center shrink-0 text-xs">${String.fromCharCode(65 + idx)}</span>
+                    <span class="mt-0.5">${optText}</span>
+                `;
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function selectQuizOption(selectedIdx) {
+            if (answered) return;
+            answered = true;
+
+            const qData = quizQuestions[currentQuizIndex];
+            const optionBtns = document.getElementById('quiz-options').children;
+            const feedbackBox = document.getElementById('quiz-feedback');
+
+            if (selectedIdx === qData.correct) {
+                playSound('correct');
+                score += 20;
+                optionBtns[selectedIdx].className = "w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 font-bold text-emerald-900 text-sm transition-all flex items-start gap-3 shadow-md";
+                
+                feedbackBox.innerHTML = `
+                    <div class="font-bold text-emerald-800 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-lg"></i> Jawaban Tepat!
+                    </div>
+                    <p class="text-emerald-700 text-xs">${qData.explanation}</p>
+                `;
+                feedbackBox.className = "p-4 rounded-2xl text-sm leading-relaxed space-y-1 bg-emerald-100/70 border border-emerald-300 block";
+            } else {
+                playSound('wrong');
+                optionBtns[selectedIdx].className = "w-full text-left p-4 rounded-2xl border-2 border-red-500 bg-red-50 font-bold text-red-900 text-sm transition-all flex items-start gap-3 shadow-md";
+                optionBtns[qData.correct].className = "w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 font-bold text-emerald-900 text-sm transition-all flex items-start gap-3 shadow-md";
+
+                feedbackBox.innerHTML = `
+                    <div class="font-bold text-red-800 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-xmark text-lg"></i> Jawaban Kurang Tepat
+                    </div>
+                    <p class="text-red-700 text-xs">${qData.explanation}</p>
+                `;
+                feedbackBox.className = "p-4 rounded-2xl text-sm leading-relaxed space-y-1 bg-red-100/70 border border-red-300 block";
+            }
+
+            document.getElementById('quiz-score-badge').innerText = `Skor: ${score}`;
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            playSound('click');
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-question-box').classList.add('hidden');
+            document.getElementById('quiz-options').classList.add('hidden');
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            const resultScreen = document.getElementById('quiz-result-screen');
+            resultScreen.classList.remove('hidden');
+
+            document.getElementById('quiz-final-score').innerText = score;
+
+            if (score >= 80) {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                document.getElementById('quiz-score-message').innerText = "Luar biasa! Pemahaman keterkaitan Pancasila sangat baik!";
+            } else {
+                document.getElementById('quiz-score-message').innerText = "Bagus! Mari baca kembali materi untuk hasil yang lebih maksimal.";
+            }
+        }
+
+        function restartQuiz() {
+            playSound('click');
+            currentQuizIndex = 0;
+            score = 0;
+            document.getElementById('quiz-question-box').classList.remove('hidden');
+            document.getElementById('quiz-options').classList.remove('hidden');
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            loadQuestion();
+        }
+
+        /* ==========================================================================
+           5. DRAG AND DROP GAME LOGIC (SUPPORT TOUCH & CLICK)
+           ========================================================================== */
+        const gameCardsData = [
+            { id: 'c1', text: 'Menghormati teman yang sedang beribadah saat belajar kelompok bersama.', targetSila: 1 },
+            { id: 'c2', text: 'Menolong korban bencana alam tanpa membeda-bedakan latar belakang suku.', targetSila: 2 },
+            { id: 'c3', text: 'Menggunakan produk dalam negeri dan menjaga persatuan sekolah.', targetSila: 3 },
+            { id: 'c4', text: 'Melakukan musyawarah pemilihan ketua OSIS secara tertib dan santun.', targetSila: 4 }
+        ];
+
+        const dropTargetsData = [
+            { sila: 1, title: 'Sila 1 (Ketuhanan)', icon: 'fa-star', color: 'amber' },
+            { sila: 2, title: 'Sila 2 (Kemanusiaan)', icon: 'fa-link', color: 'amber' },
+            { sila: 3, title: 'Sila 3 (Persatuan)', icon: 'fa-tree', color: 'emerald' },
+            { sila: 4, title: 'Sila 4 (Kerakyatan)', icon: 'fa-hippo', color: 'red' }
+        ];
+
+        let selectedCardId = null;
+        let matchedCount = 0;
+
+        function initGame() {
+            matchedCount = 0;
+            selectedCardId = null;
+            document.getElementById('game-score-badge').innerText = `Terjawab: 0/${gameCardsData.length}`;
+
+            const sourceContainer = document.getElementById('drag-source-container');
+            sourceContainer.innerHTML = '';
+
+            // Shuffle cards
+            const shuffled = [...gameCardsData].sort(() => Math.random() - 0.5);
+
+            shuffled.forEach(card => {
+                const cardEl = document.createElement('div');
+                cardEl.id = card.id;
+                cardEl.draggable = true;
+                cardEl.className = "p-4 bg-amber-50 border-2 border-amber-300 rounded-2xl shadow-sm text-xs font-semibold text-slate-800 cursor-pointer transition-all hover:border-amber-500 hover:shadow-md flex items-center gap-3";
+                cardEl.onclick = () => selectGameCard(card.id);
+                cardEl.ondragstart = (e) => onDragStart(e, card.id);
+                
+                cardEl.innerHTML = `
+                    <i class="fa-solid fa-grip-vertical text-amber-400"></i>
+                    <span>${card.text}</span>
+                `;
+                sourceContainer.appendChild(cardEl);
+            });
+
+            const dropContainer = document.getElementById('drop-targets-container');
+            dropContainer.innerHTML = '';
+
+            dropTargetsData.forEach(target => {
+                const targetEl = document.createElement('div');
+                targetEl.className = "p-4 bg-white border-2 border-dashed border-slate-300 rounded-2xl min-h-[120px] flex flex-col justify-between transition-all";
+                targetEl.ondragover = (e) => e.preventDefault();
+                targetEl.ondrop = (e) => onDrop(e, target.sila);
+                targetEl.onclick = () => placeSelectedCardIn(target.sila);
+
+                targetEl.innerHTML = `
+                    <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+                        <i class="fa-solid ${target.icon} text-${target.color}-600"></i>
+                        <span class="font-bold text-xs text-slate-800">${target.title}</span>
+                    </div>
+                    <div id="drop-zone-${target.sila}" class="text-center text-[11px] text-slate-400 py-2">
+                        Pilih/Seret kartu ke sini
+                    </div>
+                `;
+                dropContainer.appendChild(targetEl);
+            });
+        }
+
+        function selectGameCard(cardId) {
+            playSound('click');
+            selectedCardId = cardId;
+            gameCardsData.forEach(c => {
+                const el = document.getElementById(c.id);
+                if (el) {
+                    if (c.id === cardId) {
+                        el.classList.add('ring-4', 'ring-blue-400', 'bg-blue-50');
+                    } else {
+                        el.classList.remove('ring-4', 'ring-blue-400', 'bg-blue-50');
+                    }
+                }
+            });
+        }
+
+        function onDragStart(e, cardId) {
+            selectedCardId = cardId;
+            e.dataTransfer.setData("text/plain", cardId);
+        }
+
+        function onDrop(e, targetSila) {
+            e.preventDefault();
+            const cardId = e.dataTransfer.getData("text/plain") || selectedCardId;
+            if (cardId) {
+                checkAndPlaceCard(cardId, targetSila);
+            }
+        }
+
+        function placeSelectedCardIn(targetSila) {
+            if (selectedCardId) {
+                checkAndPlaceCard(selectedCardId, targetSila);
+            }
+        }
+
+        function checkAndPlaceCard(cardId, targetSila) {
+            const cardObj = gameCardsData.find(c => c.id === cardId);
+            if (!cardObj) return;
+
+            if (cardObj.targetSila === targetSila) {
+                playSound('correct');
+                matchedCount++;
+
+                // Remove card from left
+                const cardEl = document.getElementById(cardId);
+                if (cardEl) cardEl.remove();
+
+                // Fill drop zone
+                const zone = document.getElementById(`drop-zone-${targetSila}`);
+                zone.className = "p-3 bg-emerald-100/70 border border-emerald-300 text-emerald-900 rounded-xl text-xs font-semibold my-1";
+                zone.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> ${cardObj.text}`;
+
+                selectedCardId = null;
+                document.getElementById('game-score-badge').innerText = `Terjawab: ${matchedCount}/${gameCardsData.length}`;
+
+                if (matchedCount === gameCardsData.length) {
+                    confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+                }
+            } else {
+                playSound('wrong');
+                const cardEl = document.getElementById(cardId);
+                if (cardEl) {
+                    cardEl.classList.add('bg-red-100', 'border-red-400');
+                    setTimeout(() => {
+                        cardEl.classList.remove('bg-red-100', 'border-red-400');
+                    }, 800);
+                }
+            }
+        }
+
+        function resetGame() {
+            playSound('click');
+            initGame();
+        }
+
+        /* ==========================================================================
+           6. INITIALIZATION ON WINDOW LOAD
+           ========================================================================== */
+        window.onload = function() {
+            // Load default tab
+            switchTab('home');
+
+            // Render default Materi detail
+            showSilaDetail(1);
+
+            // Load Quiz first question
+            loadQuestion();
+
+            // Initialize Drag & Drop game
+            initGame();
+        };
+    </script>
+
+</body>
+</html>
